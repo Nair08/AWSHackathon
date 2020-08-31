@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AWS DevPost Hackathon</title>
+    <!-- Bootstrap --> 
+    <link href="{{ url_for('static', filename='css/bootstrap-4.4.1.css')}}" rel="stylesheet">
+	<link  rel="stylesheet"  href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"  />
+	<link  rel="stylesheet"  href="{{ url_for('static', filename='css/googlemap.css')}}"/>
+	 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script src="{{ url_for('static', filename='js/myscript.js')}}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
+
+	
+	 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+	<script src="{{ url_for('static', filename='js/googlemap.js')}}"></script>
+  <style>
+	html
+	  {
+		  scroll-behavior: smooth;
+	  }
+	</style>
+	
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button> <img  src="{{ url_for('static', filename='main_logo.png')}}" alt="" style="height: 35px; width: 40px; "/>
+      <a class="navbar-brand" href="#">UTA MAVS</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Overview <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#mapview">Map View</a>
+          </li>
+			<li class="nav-item">
+            <a class="nav-link" href="#cityview">Compare Cities</a>
+          </li>
+			
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/references" target="_blank">API Guide</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#about">About Us</a>
+            </div>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-danger" type="submit">Search</button>
+        </form>
+      </div>
+  </nav>
+    <div class="container mt-2">
+      <div class="row">
+        <div class="col-12">
+          <div class="jumbotron">
+            <h1 class="text-center">Air Quality Impacts of the Covid-19 Pandemic</h1>
+            
+            <p class="text-center">A brief analysis and visualizations on the open datasets available for Air Quality during Covid-19 and the previous years.</p>
+            <img src="{{ url_for('static', filename='pollution.jpg')}}" alt="" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+	   <div class="container subject">
+        <p align="left" class="subject" >There is growing evidence of increased rates of COVID-19 in areas with high levels of air pollution. Stanford researcher Mary Prunicki, MD, PhD, studies how toxic air can make people chronically ill, and she's monitoring this apparent connection between the pandemic and polluted air.  <br> <br>
+          Studies are coming out that are finding increased rates of COVID-19 in the areas of high pollution exposure. For example, a study out of Harvard recently found that someone living in an area of high-particulate pollution is actually 8% more likely to die from COVID than others living in an area just one small unit less pollution.</p>
+	  </div>
+    <div class="container" >
+      <div class="row">
+        <div class=" col-md-6 col-12" align="left">
+         
+          <a class="btn btn-danger" href="#" role="button">Read more</a>
+        </div>
+        
+      </div>
+    </div>
+    <hr>
+	  <section>
+      <h2 class="text-center" id="mapview">Map View</h2>
+		  
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+			  <p>Below map shows the live Air Quality for various locations. The data is updated for every 15 min on the map. The data is provided by <a href="https://aqicn.org/">aqicn.org</a> and the Air Quality is constantly provided by various contributions to <a href="https://aqicn.org/">aqicn.org</a> </p>
+			  <div class="row">
+        <div class="col-md-12 col-12" align="left">
+         
+          <a id="button1" class="btn btn-dark btn-sm" style="color: white;" onClick="generatemap('usepa-aqi')" role="button" >AQI</a> 
+			 <a id="button2"  class="btn btn-outline-dark btn-sm" onClick="generatemap('usepa-pm25')" role="button">PM2.5</a> 
+			<a id="button3" class="btn btn-outline-dark btn-sm" onClick="generatemap('usepa-10')" role="button">PM10</a> 
+			 <a id="button4" class="btn btn-outline-dark btn-sm" onClick="generatemap('usepa-o3')" role="button">Ozone</a> 
+			 <a id="button5"  class="btn btn-outline-dark btn-sm" onClick="generatemap('usepa-no2')" role="button">Nitrogen Dioxide</a> 
+			 <a id="button6" class="btn btn-outline-dark btn-sm" onClick="generatemap('usepa-so2')"  role="button">Sulfur Dioxide</a> 
+			<a id="button7" class="btn btn-outline-dark btn-sm" onClick="generatemap('usepa-co')" role="button">Carbon Monoxide</a>
+			 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" style="max-width: 150px;">
+        <option selected>2020</option>
+        
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+		<option value="2017">2017</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+      </select> 
+			 
+			 
+        </div>
+      
+      </div> <br>
+			  <script>
+			  function generatemap(pollutant)
+				  {
+					var selectedDropdown =  document.getElementById("inlineFormCustomSelect").value ;
+					  
+					  if(pollutant=='usepa-aqi' )
+						  {
+							if(selectedDropdown== 2020)
+							 {
+							  document.getElementById('mapdiv1').style.height="500px";
+							  document.getElementById('mapdiv1').style.opacity="1";
+							  
+							  
+							  var mapsArray = [2,3,4,5,6,7]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+						  
+							 }
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+						  }
+					  if(pollutant=='usepa-pm25')
+						  {
+						if(selectedDropdown== 2020)
+							 {	  
+							   
+							  document.getElementById('mapdiv2').style.height="500px";
+							  document.getElementById('mapdiv2').style.opacity="1";
+							  
+							var mapsArray = [1,3,4,5,6,7]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+							    
+						  }
+
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+						  }
+					    if(pollutant=='usepa-10')
+						  {
+							  
+							if(selectedDropdown== 2020)
+							 {  
+							  document.getElementById('mapdiv3').style.height="500px";
+							  document.getElementById('mapdiv3').style.opacity="1";
+							  
+							  
+							  var mapsArray = [2,1,4,5,6,7]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+						  }
+
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+						  }
+					  if(pollutant=='usepa-o3')
+						  {
+							  
+							if(selectedDropdown== 2020)
+							 {  
+							  document.getElementById('mapdiv4').style.height="500px";
+							  document.getElementById('mapdiv4').style.opacity="1";
+							  
+							var mapsArray = [1,3,2,5,6,7]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+							    
+						  }
+
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+						  }
+					    if(pollutant=='usepa-no2')
+						  {
+							  
+							if(selectedDropdown== 2020)
+							 {  
+							  document.getElementById('mapdiv5').style.height="500px";
+							  document.getElementById('mapdiv5').style.opacity="1";
+							  
+							var mapsArray = [1,3,4,2,6,7]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+							 }
+
+
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+						  }
+					    if(pollutant=='usepa-so2')
+						  {
+							if(selectedDropdown== 2020)
+							 {  
+							  
+							  document.getElementById('mapdiv6').style.height="500px";
+							  document.getElementById('mapdiv6').style.opacity="1";
+							  
+							  
+							  var mapsArray = [2,1,4,5,3,7]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+						  }
+
+
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+						  }
+					  if(pollutant=='usepa-co')
+						  {
+							if(selectedDropdown== 2020)
+							 {  
+							  
+							  document.getElementById('mapdiv7').style.height="500px";
+							  document.getElementById('mapdiv7').style.opacity="1";
+							  
+							var mapsArray = [1,3,2,5,6,4]  
+							  for(i=0;i<mapsArray.length;i++)
+								  {
+									 document.getElementById('mapdiv'+mapsArray[i]).style.height="0px";
+							  document.getElementById('mapdiv'+mapsArray[i]).style.opacity="0";
+								  }
+							    
+						  }
+							 else{
+							      initGMap(selectedDropdown, pollutant);
+                            }
+
+						  }
+				  }
+			 
+			  
+				 
+			  </script>
+			  <script>
+				  $(document).ready(function(){
+  $("[id^=button]").click(function(){
+	  
+	  
+	  for(i=1;i<8;i++)
+		  {
+			  $("#button"+i).removeClass("btn-dark");
+			  $("#button"+i).addClass("btn-outline-dark");
+   $("#button"+i).css( "color", "black" );  
+		  }
+	  $(this).addClass("btn-dark");
+   $( this ).css( "color", "white" );
+	  
+  });
+});
+			  </script>
+			  
+			  
+			  <div id="mapdiv1"  class="embed-responsive embed-responsive-16by9">
+              
+				<div  id="map1"  style="height:500px;" class="embed-responsive-item"></div> </div> 
+			  <div id="mapdiv2" class="embed-responsive embed-responsive-16by9" style="height: 0px; opacity: 0">
+				  <div  id="map2"  style="height:500px; " class="embed-responsive-item"></div> </div> 
+			   <div id="mapdiv3" class="embed-responsive embed-responsive-16by9"  style="height: 0px; opacity: 0">
+              
+				<div  id="map3"  style="height:500px;" class="embed-responsive-item"></div> </div> 
+			  <div id="mapdiv4" class="embed-responsive embed-responsive-16by9"  style="height: 0px; opacity: 0">
+				  <div  id="map4"  style="height:500px;" class="embed-responsive-item"></div> </div>  
+			  <div id="mapdiv5" class="embed-responsive embed-responsive-16by9"  style="height: 0px; opacity: 0">
+              
+				<div  id="map5"  style="height:500px;" class="embed-responsive-item"></div> </div> 
+			  <div id="mapdiv6" class="embed-responsive embed-responsive-16by9"  style="height: 0px; opacity: 0">
+              
+				<div  id="map6"  style="height:500px;" class="embed-responsive-item"></div> </div>  
+			  <div id="mapdiv7" class="embed-responsive embed-responsive-16by9"  style="height: 0px; opacity: 0">
+              
+				<div  id="map7"  style="height:500px;" class="embed-responsive-item"></div> </div> 
+			   
+			  <div id="mapdiv8" class="embed-responsive embed-responsive-16by9"  style="height: 0px; opacity: 0">
+              
+				<div  id="map8"  style="height:500px;" class="embed-responsive-item"></div>
+			   <div id="content"> dfgh</div>
+			  </div>
+			  
+<link  rel="stylesheet"  href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"  />  
+<script  src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>  
+  
+<script>  
+	for(var i =1;i<8;i++){
+		var pollutants = ['usepa-aqi','usepa-pm25','asean-pm10','usepa-o3','usepa-no2','usepa-so2','usepa-co'];
+      var  OSM_URL  =  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';  
+      var  OSM_ATTRIB  =  '';  
+      var  osmLayer  =  L.tileLayer(OSM_URL,  {attribution:  OSM_ATTRIB});  
+  
+      var  WAQI_URL    =  "https://tiles.waqi.info/tiles/"+pollutants[i-1]+"/{z}/{x}/{y}.png?token=262c62cae45cf502f875d993afc36fa53b5b8c86";  
+      var  WAQI_ATTR  =  '';  
+      var  waqiLayer  =  L.tileLayer(WAQI_URL,  {attribution:  WAQI_ATTR});  
+  	  var mapid = 'map'+i;
+      var  lmap  =  L.map(mapid).setView([40.7128, -74.0060],  8);  
+      lmap.addLayer(osmLayer).addLayer(waqiLayer); }  
+</script> 
+	 
+			  
+          </div>
+			
+        </div>
+      </div>
+	  </section>
+    <hr>
+    <section id="cityview">
+      <h2 class="text-center">City View</h2>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+              <p>
+                This graph shows the projection of emission of a pollutant over the course of years. Select the city and the pollutant,
+                  the graph will be generated. Data is obtained from waqi.info as part of a free use. Front end is built from d3.js
+              </p>
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lFqDM_YlXV8"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+             <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="https://aqicn.org/rankings/"></iframe>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">World Rankings</h5>
+              <p class="card-text">Top Countries with the worst air pollution index</p>
+              <a href="https://aqicn.org/rankings/"  target="_blank" class="btn btn-primary">Visit Website</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+               <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://aqicn.org/"></iframe>
+               </div>
+           <div class="card-body">
+              <h5 class="card-title">Live Location</h5>
+              <p class="card-text">The live AQI data provided by aqicn API, view the full map projection at <a href="waqi.info" target="_blank">waqi.info</p>
+              <a href="https://aqicn.org/" target="_blank" class="btn btn-primary">Show Full site</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!--
+    <div class="container">
+      <div class="row">
+        <div class="container py-sm-4">
+          <div class="row">
+            <div class="col-md-10 my-4 mx-auto">
+              <h2 class="text-center">Pricing Table</h2>
+              <hr>
+              <div class="row no-gutters my-3">
+                <div class="col-md-4 pr-2">
+                  <div class="list-group text-center my-3">
+                    <div class="list-group-item text-white bg-dark">
+                      <h4 class="text-center my-1">Basic</h4>
+                    </div>
+                    <div class="list-group-item text-uppercase font-weight-bold">
+                      Free
+                    </div>
+                    <a href="#" class="list-group-item">
+                    100 GB HDD Storage
+                    </a>
+                    <a href="#" class="list-group-item">
+                    Web Server
+                    </a>
+                    <a href="#" class="list-group-item">
+                    DNS Hosting
+                    </a>
+                    <a href="#" class="list-group-item">
+                    Mail Server
+                    </a>
+                    <div class="list-group-item">
+                      <button class="btn btn-success btn-lg btn-block text-truncate">Sign-up</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="list-group text-center">
+                    <div class="list-group-item text-white bg-dark">
+                      <h4 class="text-center my-1">Standard<br></h4>
+                    </div>
+                    <div class="list-group-item text-uppercase font-weight-bold">
+                      $99/mo.
+                    </div>
+                    <a href="#" class="list-group-item">
+                    1 TB HDD Storage
+                    </a>
+                    <a href="#" class="list-group-item">
+                  Database Option
+                    </a>
+                    <a href="#" class="list-group-item">
+                    Web Server
+                    </a>
+                    <a href="#" class="list-group-item">
+                    DNS Hosting
+                    </a>
+                    <a href="#" class="list-group-item">
+                    Mail Server
+                    </a>
+                    <a href="#" class="list-group-item">
+                    24/7 Monitoring
+                    </a>
+                    <div class="list-group-item">
+                      <button class="btn btn-success btn-lg btn-block text-truncate">Buy Now</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 pl-2">
+                  <div class="list-group text-center my-3">
+                    <div class="list-group-item text-white bg-dark">
+                      <h4 class="text-center my-1">Managed</h4>
+                    </div>
+                    <div class="list-group-item text-uppercase font-weight-bold">
+                      Contact Us
+                    </div>
+                    <a href="#" class="list-group-item">
+                    Upto 10 TB HDD Storage
+                    </a>
+                    <a href="#" class="list-group-item">
+                    Consultation
+                    </a>
+                    <a href="#" class="list-group-item">
+                    Custom Servers
+                    </a>
+                    <a href="#" class="list-group-item">
+                    24/7 Support
+                    </a>
+                    <div class="list-group-item">
+                      <button class="btn btn-success btn-lg btn-block text-truncate">Contact Us</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <hr>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 mb-md-0 mb-2">
+          <h2>Contact Us</h2>
+          <address>
+            <strong>UTA MAVS, ENGINEERING RESEARCH</strong><br>
+            UTA BLVD <br>
+            TX, 76010, US<br>
+            <abbr title="Phone">P:</abbr> (469) 920-0738
+          </address>
+          <h4>Social</h4>
+          <div class="row">
+            <div class="col-2"> <a href="https://github.com/kyathamomkar/Air-Quality-Covid-19" target="_blank"> <img class="rounded-circle" src="static/github.png" alt=""></a></div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+          <h2>Observations</h2>
+          <ul class="list-unstyled">
+            <li class="media">
+              <img class="mr-3" style="max-height: 50px; max-width: 50px;" src="static/airlogo.png" alt="Generic placeholder image">
+              <div class="media-body">
+                <h5 class="mt-0 mb-1">High Impact</h5>
+                <p class="mb-0">The city ---- has seen a lot of improvement in its air Quality since the covid lockdown. Some Numbers here.</p>
+              </div>
+            </li>
+            <li class="media my-4">
+              <img class="mr-3"  style="max-height: 50px; max-width: 50px; filter: sepia(100%);"  src="static/airlogo.png" alt="Generic placeholder image">
+              <div class="media-body">
+                <h5 class="mt-0 mb-1">Low Impact</h5>
+                <p class="mb-0">The city ---- has seen a huge deterioration in its air Quality since the covid lockdown. Some Numbers here.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-12">
+          <h2 id="about">About Us</h2>
+         <p>Omkar Kyatham - Web Development
+			  	<pre>    pursuing Master's Degree in CS, UTA.</pre>
+			 Upasana Dhar - Data Analysis and modelling
+				<pre>    pursuing PhD in Environmental Sciences,
+                    UTA.</pre>
+ 			 Nisarg Pawar - Web Development
+			  	<pre>    pursuing Master's Degree in CS, UTA.</pre>
+			 Pragnya - Web Development
+				<pre>    pursuing Master's Degree in CS, UTA.</pre>
+			 Siddhi - Web Development
+				<pre>    pursuing Master's Degree in CS, UTA.</pre>
+			</p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <footer class="text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+          <p>Copyright © UTAMAVS 2020. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-4.4.1.js')}}"></script>
+  </body>
+</html>

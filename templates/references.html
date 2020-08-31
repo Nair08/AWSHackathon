@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>References & API</title>
+<link href="{{ url_for('static', filename='css/aboutPageStyle.css')}}" rel="stylesheet" type="text/css">
+
+<!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+<script>var __adobewebfontsappname__="dreamweaver"</script><script src="http://use.edgefonts.net/montserrat:n4:default;source-sans-pro:n2:default.js" type="text/javascript"></script>
+</head>
+
+<body>
+<!-- Header content -->
+<header>
+  <div class="profileLogo"> 
+    <!-- Profile logo. Add a img tag in place of <span>. -->
+    <p class="logoPlaceholder"><!-- <img src="logoImage.png" alt="sample logo"> --><span>API Guide&nbsp;</span></p>
+  </div>
+   
+  <!-- Identity details -->
+</header>
+<!-- content -->
+<section class="mainContent"> 
+  <!-- Contact details -->
+  <!-- Previous experience details -->
+  <section class="section2">
+    <h2 class="sectionTitle">API & Services Used</h2>
+    <hr class="sectionTitleRule">
+    <hr class="sectionTitleRule2">
+    <!-- First Title & company details  -->
+    <article class="section2Content">
+      <h2 class="sectionContentTitle">AQICN</h2>
+      <h3 class="sectionContentSubTitle">Website : aqicn.org</h3>
+      <p class="sectionContent"> The World Air Quality Index project is a non-profit project started in 2007. Its mission is to promote air pollution awareness for citizens and provide a unified and world-wide air quality information.
+
+The project is providing transparent air quality information for more than 130 countries, covering more than 30,000 stations in 2000 major cities, via those two websites: aqicn.org and waqi.info. </p>
+    </article>
+    <!-- Second Title & company details  -->
+    <article class="section2Content">
+      <h2 class="sectionContentTitle"> Google Maps API</h2>
+      <h3 class="sectionContentSubTitle">website : https://cloud.google.com/maps-platform/</h3>
+      <p class="sectionContent"> We have used google maps javascript api to generate the maps with the markers. The code snippets for the front end are provided on the documentation pages. The data that goes in the markers is retrieved from the database and the styling of the marker is done using css, Javascrript. </p>
+    </article>
+	   <article class="section2Content">
+      <h2 class="sectionContentTitle"> Leaflet Maps</h2>
+      <h3 class="sectionContentSubTitle">website : https://leafletjs.com</h3>
+      <p class="sectionContent"> Leaflet a js library for responsive maps is used along with the waqi.info and aciqn.org/api to present the air quality index on the maps. The main reason to use this library is its size. It weighs only 38KB of js for its impressive design. </p>
+    </article>
+	  <article class="section2Content">
+      <h2 class="sectionContentTitle"> AWS Elastic BeanStalk</h2>
+      <h3 class="sectionContentSubTitle">website : https://aws.amazon.com</h3>
+      <p class="sectionContent"> The application is hosted on AWS Elatic Beanstalk with the underlying environment containing a server run on python. Using Elastic Beanstalk is more efficient for its quick deployment, and the environment is completely provided by AWS. </p>
+    </article>  <article class="section2Content">
+      <h2 class="sectionContentTitle"> AWS RDS</h2>
+      <h3 class="sectionContentSubTitle">website : https://aws.amazon.com</h3>
+      <p class="sectionContent"> The application is utilizing the backend database on AWS RDS. The python Flask server connects the database upon every request, runs the query and returns back the response to the front-end. </p>
+    </article>  
+    <!-- Replicate the above Div block to add more title and company details --> 
+  </section>
+  <!-- Links to expore your past projects and download your CV -->
+  
+</section>
+<footer>
+  <hr>
+  <p class="footerDisclaimer">2020  Copyrights - <span>All Rights Reserved</span></p>
+  <p class="footerNote">UTA MAVS  <span></span></p>
+</footer>
+</body>
+</html>
