@@ -5,8 +5,8 @@ import urllib.request
 import requests
 application = Flask(__name__)
 
-API_KEY = ""
-GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
+API_KEY = "AhlNlLlP5dK6b6rVLEwUK4Y8GqUrgpIdXvNz8s2xW4emtb3QOrvTv4KjMml5xhxJ"
+GEOCODE_BASE_URL = "http://dev.virtualearth.net/REST/v1/Locations"
 
 @application.route('/')
 def hello_world():
@@ -42,35 +42,44 @@ def temp():
 
     print(year + ' ' + pollutant)
     print(pairs[pollutant])
-    query = "select distinct (City), max(max) from {} where Specie = '{}' group by City".format("y_"+year, pairs[pollutant])
+    query = "select distinct (City),Country, max(max) from {} where Specie = '{}' group by City".format("y_"+year, pairs[pollutant])
     print(query)
     piecurr.execute(query)
     queryresults = piecurr.fetchall()
     print(queryresults)
     final_results = []
     for item in queryresults:
-        individualItem = []
-        geocode_response = geocode(item[0])
-        print(geocode_response)
-        print(item[1], geocode_response["lat"], geocode_response["lng"])
-        individualItem.append(geocode_response["lat"])
-        individualItem.append(geocode_response["lng"])
-        individualItem.append(item[1])
-        final_results.append(individualItem)
+        if item:
+
+            try:
+                individualItem = []
+                geocode_response = geocode(item[0] + " " + item[1])
+                print(geocode_response)
+                print(item[0], geocode_response[0], geocode_response[1])
+                individualItem.append(geocode_response[0])
+                individualItem.append(geocode_response[1])
+                individualItem.append(item[2])
+                final_results.append(individualItem)
+            except Exception:
+                pass
     queryresults = final_results
     return str(queryresults)
 
 def geocode(address):
     # Join the parts of the URL together into one string.
-    params = urllib.parse.urlencode({"address": address, "key": API_KEY,})
+    params = urllib.parse.urlencode({"q": address, "key": API_KEY,})
     url = f"{GEOCODE_BASE_URL}?{params}"
 
     result = json.load(urllib.request.urlopen(url))
-
-    if result["status"] in ["OK"]:
-        return result["results"][0]["geometry"]["location"]
-
-    raise Exception(result["error_message"])
+    try:
+        if result["statusDescription"] in ["OK"]:
+            if result["resourceSets"][0]["resources"][0]["point"]["coordinates"]:
+                return result["resourceSets"][0]["resources"][0]["point"]["coordinates"]
+        else:
+            print(address, " no geolocation")
+    except Exception:
+        pass
+    #raise Exception(result["error_message"])
 
 
 if __name__ == '__main__':

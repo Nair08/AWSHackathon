@@ -13,7 +13,7 @@ map = new google.maps.Map(document.getElementById("map8"), {
 	lat: -33.9,
 	lng: 151.1
   },
-  zoom: 10
+  zoom: 0
 });
         /**
          * A customized popup on the map.

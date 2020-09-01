@@ -24,6 +24,12 @@
 	  {
 		  scroll-behavior: smooth;
 	  }
+      .subject{
+
+  text-align: justify;
+  text-justify: inter-word;
+
+      }
 	</style>
 	
   </head>
@@ -38,11 +44,17 @@
           <li class="nav-item active">
             <a class="nav-link" href="#">Overview <span class="sr-only">(current)</span></a>
           </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#study">Study</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="#mapview">Map View</a>
           </li>
+             <li class="nav-item">
+            <a class="nav-link" href="#result">Result</a>
+          </li>
 			<li class="nav-item">
-            <a class="nav-link" href="#cityview">Compare Cities</a>
+            <a class="nav-link" href="#cityview">Project Video</a>
           </li>
 			
           <li class="nav-item dropdown">
@@ -54,11 +66,56 @@
             </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-danger" type="submit">Search</button>
+        <form class="form-inline my-2 my-lg-0" >
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchbox" >
+          <button class="btn btn-danger" type="button" onclick="findString()">Search</button>
         </form>
       </div>
+
+        <script>
+
+            var TRange=null;
+
+function findString () {
+
+    str = document.getElementById("searchbox").value;
+    if (parseInt(navigator.appVersion)<4) return;
+ var strFound;
+ if (window.find) {
+
+  // CODE FOR BROWSERS THAT SUPPORT window.find
+
+  strFound=self.find(str);
+  if (!strFound) {
+   strFound=self.find(str,0,1);
+   while (self.find(str,0,1)) continue;
+  }
+ }
+ else if (navigator.appName.indexOf("Microsoft")!=-1) {
+
+  // EXPLORER-SPECIFIC CODE
+
+  if (TRange!=null) {
+   TRange.collapse(false);
+   strFound=TRange.findText(str);
+   if (strFound) TRange.select();
+  }
+  if (TRange==null || strFound==0) {
+   TRange=self.document.body.createTextRange();
+   strFound=TRange.findText(str);
+   if (strFound) TRange.select();
+  }
+ }
+ else if (navigator.appName=="Opera") {
+  alert ("Opera browsers not supported, sorry...")
+  return;
+ }
+ if (!strFound) alert ("String '"+str+"' not found!")
+ return;
+}
+        </script>
+
+
   </nav>
     <div class="container mt-2">
       <div class="row">
@@ -73,24 +130,75 @@
       </div>
     </div>
 
+       <div class="container subject" id="study">
+           <h2>Motivation of study</h2>
+        <p align="left" class="subject" >
+        <ol>
+           <li>
+             <p>  The Covid19 times had seen lockdown implemented in many regions. The motivation of the study
+           was to see how the air quality is impacted post Covid19 times with several countries imposing strict lockdown policies.</p>
+           </li>
+            <li>
+             <p> Can this be a future strategy to implement cleaner climate ??</p>
+           </li>
+       </ol>
+        </p>
+	  </div>
+
+     <div class="container subject">
+           <h2>Method Used:</h2>
+        <p align="left" class="subject" >
+         Data visualization for temporal change in air quality indices and individual pollutants like carbon monoxide, ozone, particulate matter, sulphur dioxide,
+            nitrogen oxides have been plotted on world map. Along with it, data analysis of temporal variation in <strong>cumulative average pollutant concentration </strong>
+            through years of 2015 to 2020, has been presented.
+        </p> <br>
+          <p align="left" class="subject" >
+         We calculated the cumulative average concentartion of pollutants for each individual cities in different countries and
+              observed how they changed through 2015 to 2020. Since AQI (air quality index) is not available for all cities and
+              countries, we use the cumulative average pollutant concentration in our final data analysis. We assume atmospheric
+              conditions are constant among each countries
+              throughout the years and work with only maximum pollutants generated at each city during each day of the year.
+        </p> <br>
+        <p align="left" class="subject" >
+         First we grouped the dataset based on cities and found the mean concntration of pollutants for each cities for respective
+            countries. The we used the rating to check the number of cities with low, moderate and high average pollutant concentrations
+            and whether the number of cities falling in these crtieria increases or decreases through the years. We treat our inferences
+            based on the values observed in 2020 as post-Covid19 data and values from year 2015-2019 as pre-Covid19 data.
+        </p> <br>
+	  </div>
+
+
+
+
 <div class="container" style=" overflow: hidden;" >
     <iframe  class="embed-responsive-item" frameborder="" class="juxtapose" width="100%" style=" height:780px; overflow: hidden;  "
       src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=382f94c4-ebee-11ea-bf88-a15b6c7adf9a"></iframe>
 </div>
 
-	   <div class="container subject">
-        <p align="left" class="subject" >There is growing evidence of increased rates of COVID-19 in areas with high levels of
-            air pollution. Stanford researcher Mary Prunicki, MD, PhD, studies how toxic air can make people chronically ill,
-            and she's monitoring this apparent connection between the pandemic and polluted air.  <br> <br>
-          Studies are coming out that are finding increased rates of COVID-19 in the areas of high pollution exposure.
-            For example, a study out of Harvard recently found that someone living in an area of high-particulate pollution
-            is actually 8% more likely to die from COVID than others living in an area just one small unit less pollution.</p>
+    <br><br>
+	   <div class="container subject" id="result">
+           <h2>Result and Discussion</h2>
+        <p align="left" class="subject" >
+The number of cities falling within higher to moderate pollutant concentration range decreases in the year 2020 (post-Covid19 time) with respect to the previous years (pre-Covid19 time). Only 4 cities shows unhealthy conditions with higher average pollutant concentration in post Covid19 time during the year 2020 while 19 cities showed higher average pollutant concentration during the year 2019. The number of cities showing higher average pollutant concentration has decreased from year 2015 to 2020.
+</p><br>
+            <p align="left" class="subject" >
+We also observe that the maximum average pollutant concentration throughout the world observed in 2020 ( post Covid19 time) has decreased significantly with respect to 2019 with <strong>decrease% of about 52%</strong>. The cities of respective countries with higher average pollutant concentration in 2020 are <strong>Israel and India.</strong>            </p>
+ <br><p align="left" class="subject" >
+     However, the count of number of cities with low average pollutant concentration (<=51) is <strong>less </strong>in 2020 with respect to 2019. The cities of respective countries with lower average pollutant concentration in 2020 are <strong>Argentina, Algeria,Taiwan, North Macedonia and Israel.</strong>
+</p> <br>
+
+           <p align="left" class="subject" >
+     We saw that the count of number of cities showing good/healthy conditions with lower average pollutant concentration is
+               <strong>less  </strong>post Covid19 time with about <strong> 338 cities in 2020 </strong> with respect to pre Covid19 time at 2019 when the count of cities with lower pollutant concentration was <strong> 355</strong>. This may be due to other factors like atmospheric conditions,humidity, temperature etc also contributing to the pollutant concentration dust/ partculate matter formation in an area.
+</p>
+<br>
+
 	  </div>
     <div class="container" >
       <div class="row">
         <div class=" col-md-6 col-12" align="left">
          
-          <a class="btn btn-danger" href="#" role="button">Read more</a>
+          <a class="btn btn-danger" href="https://github.com/upasanadhar101/AWS-Hackathon/blob/master/.github/workflows/POLLUTANT%20CI_AWS%20HACKATHON_ALL%20YEARS%202015-2020.ipynb" role="button">Read more</a>
         </div>
         
       </div>
@@ -103,7 +211,7 @@
         <div class="row">
           <div class="col-12">
 			  <p>Below map shows the live Air Quality for various locations. The data is updated for every 15 min on the map. The data is provided by <a href="https://aqicn.org/">aqicn.org</a> and the Air Quality is constantly provided by various contributions to <a href="https://aqicn.org/">aqicn.org</a> </p>
-			  <div class="row">
+              <div class="row">
         <div class="col-md-12 col-12" align="left">
          
           <a id="button1" class="btn btn-dark btn-sm" style="color: white;" onClick="generatemap('usepa-aqi')" role="button" >AQI</a> 
@@ -126,7 +234,7 @@
 			 
         </div>
       
-      </div> <br>
+      </div>
 			  <script>
 			  function generatemap(pollutant)
 				  {
@@ -355,14 +463,15 @@
 	  </section>
     <hr>
     <section id="cityview">
-      <h2 class="text-center">City View</h2>
+      <h2 class="text-center">Project Video</h2>
       <div class="container">
         <div class="row">
           <div class="col-12">
-              <p>
-                This graph shows the projection of emission of a pollutant over the course of years. Select the city and the pollutant,
+              <p> Video Demonstration of what is the project about, what datasets we used, how the application is built and which services
+                  we are utilising provided by AWS.
+              <!--  This graph shows the projection of emission of a pollutant over the course of years. Select the city and the pollutant,
                   the graph will be generated. Data is obtained from waqi.info as part of a free use. Front end is built from d3.js
-              </p>
+             -->  </p>
             <div class="embed-responsive embed-responsive-16by9">
               <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lFqDM_YlXV8"></iframe>
             </div>
@@ -391,108 +500,39 @@
                </div>
            <div class="card-body">
               <h5 class="card-title">Live Location</h5>
-              <p class="card-text">The live AQI data provided by aqicn API, view the full map projection at <a href="waqi.info" target="_blank">waqi.info</p>
+               <p class="card-text">The live AQI data provided by aqicn API, view the full map projection at <a href="waqi.info" target="_blank">waqi.info </a></p>
               <a href="https://aqicn.org/" target="_blank" class="btn btn-primary">Show Full site</a>
             </div>
           </div>
         </div>
       </div>
-    </div> <!--
-    <div class="container">
-      <div class="row">
-        <div class="container py-sm-4">
-          <div class="row">
-            <div class="col-md-10 my-4 mx-auto">
-              <h2 class="text-center">Pricing Table</h2>
-              <hr>
-              <div class="row no-gutters my-3">
-                <div class="col-md-4 pr-2">
-                  <div class="list-group text-center my-3">
-                    <div class="list-group-item text-white bg-dark">
-                      <h4 class="text-center my-1">Basic</h4>
-                    </div>
-                    <div class="list-group-item text-uppercase font-weight-bold">
-                      Free
-                    </div>
-                    <a href="#" class="list-group-item">
-                    100 GB HDD Storage
-                    </a>
-                    <a href="#" class="list-group-item">
-                    Web Server
-                    </a>
-                    <a href="#" class="list-group-item">
-                    DNS Hosting
-                    </a>
-                    <a href="#" class="list-group-item">
-                    Mail Server
-                    </a>
-                    <div class="list-group-item">
-                      <button class="btn btn-success btn-lg btn-block text-truncate">Sign-up</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="list-group text-center">
-                    <div class="list-group-item text-white bg-dark">
-                      <h4 class="text-center my-1">Standard<br></h4>
-                    </div>
-                    <div class="list-group-item text-uppercase font-weight-bold">
-                      $99/mo.
-                    </div>
-                    <a href="#" class="list-group-item">
-                    1 TB HDD Storage
-                    </a>
-                    <a href="#" class="list-group-item">
-                  Database Option
-                    </a>
-                    <a href="#" class="list-group-item">
-                    Web Server
-                    </a>
-                    <a href="#" class="list-group-item">
-                    DNS Hosting
-                    </a>
-                    <a href="#" class="list-group-item">
-                    Mail Server
-                    </a>
-                    <a href="#" class="list-group-item">
-                    24/7 Monitoring
-                    </a>
-                    <div class="list-group-item">
-                      <button class="btn btn-success btn-lg btn-block text-truncate">Buy Now</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 pl-2">
-                  <div class="list-group text-center my-3">
-                    <div class="list-group-item text-white bg-dark">
-                      <h4 class="text-center my-1">Managed</h4>
-                    </div>
-                    <div class="list-group-item text-uppercase font-weight-bold">
-                      Contact Us
-                    </div>
-                    <a href="#" class="list-group-item">
-                    Upto 10 TB HDD Storage
-                    </a>
-                    <a href="#" class="list-group-item">
-                    Consultation
-                    </a>
-                    <a href="#" class="list-group-item">
-                    Custom Servers
-                    </a>
-                    <a href="#" class="list-group-item">
-                    24/7 Support
-                    </a>
-                    <div class="list-group-item">
-                      <button class="btn btn-success btn-lg btn-block text-truncate">Contact Us</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+    </div>
+
+    <hr>
+    <div class="container subject" id="conclusion">
+           <h2>Conclusion</h2>
+        <p align="left" class="subject" >
+From the lower number of cities showing higher pollutant concentration in post covid time in the year 2020,
+            we infer that the average pollutant concentration lowered during post-covid time over certain cities
+            due to lockdown and consecutively less traffic. However, since other factors like atmospheric conditions,
+            dust formation etc. in an area also contributes to pollutant concentration, the count of number of cities
+            showing good/healthy conditions with <strong>lower average pollutant concentration is less at 2020 </strong> in post covid
+            time with respect to pre covid time at 2019 when the count was higher. Also, certain cities like <strong>Delhi</strong> in
+            India shows approximately the same pollutant concentration throughput and there is not much change in post
+            covid times. The lockdown does help in lowering traffic in certain regions
+            and corresponding lowering of certain regional pollutant concentrations but other factors play a role in the
+            air quality as well.
+        </p>
+        <p align="left" class="subject">
+            <strong>Limitation of this study:- </strong> The number of data points collected for each cities vary through years and the cumulative average
+            is based on the data available.
+            This results in some biases when we are comparing the average concentrations among cities.
+
+
+        </p>
+
+
+	  </div>
     <hr>
     <div class="container">
       <div class="row">
@@ -506,40 +546,40 @@
           </address>
           <h4>Social</h4>
           <div class="row">
-            <div class="col-2"> <a href="https://github.com/kyathamomkar/Air-Quality-Covid-19" target="_blank"> <img class="rounded-circle" src="static/github.png" alt=""></a></div>
+            <div class="col-2"> <a href="https://github.com/kyathamomkar/AWSHackathon" target="_blank"> <img class="rounded-circle" src="static/github.png" alt=""></a></div>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 col-12">
           <h2>Observations</h2>
           <ul class="list-unstyled">
             <li class="media">
-              <img class="mr-3" style="max-height: 50px; max-width: 50px;" src="static/airlogo.png" alt="Generic placeholder image">
+              <img class="mr-3" style="max-height: 50px; max-width: 50px; filter: sepia(100%);" src="static/airlogo.png" alt="Generic placeholder image">
               <div class="media-body">
                 <h5 class="mt-0 mb-1">High Impact</h5>
-                <p class="mb-0">The city ---- has seen a lot of improvement in its air Quality since the covid lockdown. Some Numbers here.</p>
+                <p class="mb-0">The city <strong>Ashkelon, IL </strong> has the most unhealthy situation in its air Quality since the Covid19 lockdown. It's AQI is <strong>238.380556</strong>.</p>
               </div>
             </li>
             <li class="media my-4">
-              <img class="mr-3"  style="max-height: 50px; max-width: 50px; filter: sepia(100%);"  src="static/airlogo.png" alt="Generic placeholder image">
+              <img class="mr-3"  style="max-height: 50px; max-width: 50px; "  src="static/airlogo.png" alt="Generic placeholder image">
               <div class="media-body">
                 <h5 class="mt-0 mb-1">Low Impact</h5>
-                <p class="mb-0">The city ---- has seen a huge deterioration in its air Quality since the covid lockdown. Some Numbers here.</p>
+                  <p class="mb-0">The city <strong>Petaẖ Tiqwa, IL </strong>    has seen a lowest value in its air Quality since the Covid19 lockdown. It's AQI is <strong> 50.229129</strong>.</p>
               </div>
             </li>
           </ul>
         </div>
         <div class="col-lg-4 col-12">
           <h2 id="about">About Us</h2>
-         <p>Omkar Kyatham - Web Development
+            <p> <a href="https://github.com/kyathamomkar" target="_blank">Omkar Kyatham </a> - Web Development
 			  	<pre>    pursuing Master's Degree in CS, UTA.</pre>
-			 Upasana Dhar - Data Analysis and modelling
+			 <a href="http://github.com/upasanadhar101" target="_blank"> Upasana Dhar</a> - Data Analysis and modelling
 				<pre>    pursuing PhD in Environmental Sciences,
                     UTA.</pre>
- 			 Nisarg Pawar - Web Development
+ 			<a href="https://www.linkedin.com/in/nisarg-pawar-b29044118/" target="_blank"> Nisarg Pawar  </a> - Web Development
 			  	<pre>    pursuing Master's Degree in CS, UTA.</pre>
-			 Pragnya - Web Development
+			 <a href="https://www.linkedin.com/in/pragnyashreemaitreyee/" target="_blank">Maitreyee, Pragnyashree  </a>- Web Development
 				<pre>    pursuing Master's Degree in CS, UTA.</pre>
-			 Siddhi - Web Development
+            <a href="https://www.linkedin.com/in/siddhinair08/" target="_blank"> Siddhi Ramanand </a> - Web Development
 				<pre>    pursuing Master's Degree in CS, UTA.</pre>
 			</p>
         </div>
