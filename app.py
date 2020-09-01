@@ -5,7 +5,7 @@ import urllib.request
 import requests
 application = Flask(__name__)
 
-API_KEY = "AIzaSyBqTc0FUEGr9ko4JXdvGiczVol5f5B4HBw"
+API_KEY = ""
 GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 
 @application.route('/')
