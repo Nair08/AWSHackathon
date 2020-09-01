@@ -5,7 +5,7 @@ import urllib.request
 import requests
 application = Flask(__name__)
 
-API_KEY = ""
+API_KEY = "AhlNlLlP5dK6b6rVLEwUK4Y8GqUrgpIdXvNz8s2xW4emtb3QOrvTv4KjMml5xhxJ"
 GEOCODE_BASE_URL = "http://dev.virtualearth.net/REST/v1/Locations"
 
 @application.route('/')
